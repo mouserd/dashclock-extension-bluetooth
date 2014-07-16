@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">DashClock MyBluetooth Extension</string>
+  <string name="extension_label">MyBluetooth</string>
+  <string name="extension_description">Displays your current bluetooth status</string>
+  <string name="toggle_bluetooth_to_disabled_message">Disable bluetooth?</string>
+  <string name="toggle_bluetooth_to_enabled_message">Enable bluetooth?</string>
+  <string name="toggle_bluetooth_affirmative_button">OK</string>
+  <string name="toggle_bluetooth_negative_button">Cancel</string>
+  <string name="action_settings">Settings</string>
+</resources>
