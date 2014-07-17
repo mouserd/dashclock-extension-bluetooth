@@ -8,10 +8,10 @@
   <artifactId>mybluetooth</artifactId>
   <version>1.0.0</version>
   <packaging>apk</packaging>
-  <name>DashClock MyBluetooth Extension</name>
+  <name>DashClock Bluetooth Extension</name>
 
   <properties>
-    <project.versionCode>0</project.versionCode>
+    <project.versionCode>1</project.versionCode>
     <platform.version>4.1.1.4</platform.version>
     <android.plugin.version>3.9.0-rc.2</android.plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
