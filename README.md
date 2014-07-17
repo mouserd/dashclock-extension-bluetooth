@@ -12,9 +12,8 @@ Specifically, this extension allows you to:
 + Toggle your current Bluetooth status with one tap
 + View all the known paired devices (only when Bluetooth is enabled)
 
-<img src="playstore/screenshots/thumbs/s5-device-1.png" 
-  align="center">&nbsp;&nbsp;<img src="playstore/screenshots/thumbs/s5-device-2.png" align="center">&nbsp;&nbsp;<img 
-  src="playstore/screenshots/thumbs/s5-device-3.png" align="center">
+<img src="playstore/screenshots/thumbs/s5-device-3.png" 
+  align="center">&nbsp;&nbsp;<img src="playstore/screenshots/thumbs/s5-device-2.png" align="center">
 
 ## Technical Details
 
