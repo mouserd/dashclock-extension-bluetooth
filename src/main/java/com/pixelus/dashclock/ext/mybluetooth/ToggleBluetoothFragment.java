@@ -24,7 +24,7 @@ public class ToggleBluetoothFragment extends DialogFragment {
     final Activity activity = getActivity();
     final Intent intent = getActivity().getIntent();
     final Bundle bundle = intent.getExtras();
-    bluetoothEnabled = bundle.getBoolean(MyBluetoothExtension.BLUETOOTH_ENABLED);
+    bluetoothEnabled = bundle.getBoolean(BluetoothExtension.BLUETOOTH_ENABLED);
 
     int message = R.string.toggle_bluetooth_to_enabled_message;
     if (bluetoothEnabled) {

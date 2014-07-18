@@ -10,9 +10,9 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 import static android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED;
 
-public class MyBluetoothExtension extends DashClockExtension {
+public class BluetoothExtension extends DashClockExtension {
 
-  public static final String TAG = MyBluetoothExtension.class.getName();
+  public static final String TAG = BluetoothExtension.class.getName();
   public static final String BLUETOOTH_ENABLED = "com.pixelus.dashclock.ext.mybluetooth.BLUETOOTH_ENABLED";
 
   private boolean crashlyticsStarted = false;
@@ -45,7 +45,7 @@ public class MyBluetoothExtension extends DashClockExtension {
 
     final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-    final MyBluetoothMessageBuilder builder = new MyBluetoothMessageBuilder()
+    final BluetoothMessageBuilder builder = new BluetoothMessageBuilder()
         .withContext(this)
         .withBluetoothAdaptor(bluetoothAdapter);
 

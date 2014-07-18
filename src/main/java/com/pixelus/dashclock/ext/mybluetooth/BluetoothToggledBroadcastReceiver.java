@@ -11,9 +11,9 @@ public class BluetoothToggledBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = BluetoothToggledBroadcastReceiver.class.getName();
 
-    private MyBluetoothExtension extension;
+    private BluetoothExtension extension;
 
-    public BluetoothToggledBroadcastReceiver(final MyBluetoothExtension extension) {
+    public BluetoothToggledBroadcastReceiver(final BluetoothExtension extension) {
 
         this.extension = extension;
     }

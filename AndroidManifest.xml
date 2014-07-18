@@ -10,12 +10,12 @@
                android:label="@string/app_name" android:theme="@style/AppTheme"
                 android:debuggable="${debuggable}">
 
-    <activity android:exported="true" android:label="@string/extension_label" android:name=".MyBluetoothExtensionActivity"/>
+    <activity android:exported="true" android:label="@string/extension_label" android:name=".BluetoothExtensionActivity"/>
 
     <activity android:exported="true" android:name=".ToggleBluetoothDialogActivity" android:theme="@android:style/Theme.Dialog" />
 
     <service android:icon="@drawable/ic_launcher" android:label="@string/extension_label"
-             android:name=".MyBluetoothExtension"
+             android:name=".BluetoothExtension"
              android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
       <intent-filter>
         <action android:name="com.google.android.apps.dashclock.Extension"/>

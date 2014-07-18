@@ -27,18 +27,18 @@ import static android.bluetooth.BluetoothClass.Device.Major.WEARABLE;
 /*
  * @author David Mouser
  */
-public class MyBluetoothMessageBuilder {
+public class BluetoothMessageBuilder {
 
-  private static final String TAG = MyBluetoothMessageBuilder.class.getName();
+  private static final String TAG = BluetoothMessageBuilder.class.getName();
   private BluetoothAdapter bluetoothAdaptor;
   private Context context;
 
-  public MyBluetoothMessageBuilder withContext(final Context context) {
+  public BluetoothMessageBuilder withContext(final Context context) {
     this.context = context;
     return this;
   }
 
-  public MyBluetoothMessageBuilder withBluetoothAdaptor(final BluetoothAdapter bluetoothAdaptor) {
+  public BluetoothMessageBuilder withBluetoothAdaptor(final BluetoothAdapter bluetoothAdaptor) {
     this.bluetoothAdaptor = bluetoothAdaptor;
     return this;
   }
@@ -59,8 +59,12 @@ public class MyBluetoothMessageBuilder {
 
   public String buildExpandedBodyMessage() {
 
+    if (bluetoothAdaptor == null) {
+      return "";
+    }
+
     final boolean bluetoothEnabled = bluetoothAdaptor.isEnabled();
-    if (bluetoothAdaptor == null || !bluetoothEnabled) {
+    if (!bluetoothEnabled) {
       return "";
     }
 
