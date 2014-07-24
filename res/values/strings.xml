@@ -26,8 +26,8 @@
 
   <string name="action_settings">Settings</string>
   <string name="extension_settings_title">DashClock Bluetooth Settings</string>
-  <string name="pref_connected_devices_only">Show only connected devices?</string>
+  <string name="pref_connected_devices_only_title">Show only connected devices?</string>
   <string name="pref_category_display">Display</string>
   <string name="pref_category_labs">Labs</string>
-  <string name="pref_prompt_to_connect_to_paired_device">Connect device on enable?</string>
+  <string name="pref_prompt_to_connect_to_paired_device_title">Connect device on enable?</string>
 </resources>

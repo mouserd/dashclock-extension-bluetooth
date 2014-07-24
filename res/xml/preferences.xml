@@ -6,14 +6,14 @@
   <PreferenceCategory android:title="@string/pref_category_display">
     <CheckBoxPreference
         android:key="show_connected_devices_only"
-        android:title="@string/pref_connected_devices_only"
+        android:title="@string/pref_connected_devices_only_title"
         android:defaultValue="false"/>
   </PreferenceCategory>
 
   <PreferenceCategory android:title="@string/pref_category_labs">
     <CheckBoxPreference
         android:key="prompt_to_connect_to_paired_device"
-        android:title="@string/pref_prompt_to_connect_to_paired_device"
+        android:title="@string/pref_prompt_to_connect_to_paired_device_title"
         android:defaultValue="false"/>
   </PreferenceCategory>
 
