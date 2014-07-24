@@ -1,9 +1,10 @@
-package com.pixelus.dashclock.ext.mybluetooth;
+package com.pixelus.dashclock.ext.mybluetooth.builder;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.util.Log;
+import com.pixelus.dashclock.ext.mybluetooth.BluetoothExtension;
+import com.pixelus.dashclock.ext.mybluetooth.R;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -31,15 +32,27 @@ public class BluetoothMessageBuilder {
 
   private static final String TAG = BluetoothMessageBuilder.class.getName();
   private BluetoothAdapter bluetoothAdaptor;
-  private Context context;
+  private BluetoothExtension context;
+  private boolean showConnectedDevicesOnly;
+  private Set<BluetoothDevice> connectedDevices;
 
-  public BluetoothMessageBuilder withContext(final Context context) {
+  public BluetoothMessageBuilder withContext(final BluetoothExtension context) {
     this.context = context;
     return this;
   }
 
   public BluetoothMessageBuilder withBluetoothAdaptor(final BluetoothAdapter bluetoothAdaptor) {
     this.bluetoothAdaptor = bluetoothAdaptor;
+    return this;
+  }
+
+  public BluetoothMessageBuilder withOnlyConnectedDevicesShown(final boolean showConnectedDevicesOnly) {
+    this.showConnectedDevicesOnly = showConnectedDevicesOnly;
+    return this;
+  }
+
+  public BluetoothMessageBuilder withConnectedDevices(final Set<BluetoothDevice> connectedDevices) {
+    this.connectedDevices = connectedDevices;
     return this;
   }
 
@@ -68,27 +81,38 @@ public class BluetoothMessageBuilder {
       return "";
     }
 
-    String pairedDevices = "";
-    if (bluetoothEnabled) {
+    String deviceList = "";
 
-      Set<BluetoothDevice> bondedDevices = bluetoothAdaptor.getBondedDevices();
-      if (bondedDevices.isEmpty()) {
-        pairedDevices += context.getString(R.string.bluetooth_no_paired_devices);
-      }
-
-      Log.d(TAG, "Paired devices count: " + bondedDevices.size());
-      Iterator<BluetoothDevice> bondedDevicesIterator = bondedDevices.iterator();
-      while (bondedDevicesIterator.hasNext()) {
-
-        BluetoothDevice bondedDevice = bondedDevicesIterator.next();
-        pairedDevices += bondedDevice.getName()
-            + " [" + getBluetoothMajorDeviceClass(bondedDevice.getBluetoothClass().getMajorDeviceClass()) + "]"
-            + (bondedDevicesIterator.hasNext() ? "\n" : "");
-      }
+    final Set<BluetoothDevice> bluetoothDevices = getBluetoothDevices();
+    if (bluetoothDevices.isEmpty()) {
+      deviceList += context.getString(R.string.bluetooth_no_devices);
     }
 
-    return context.getString(R.string.extension_expanded_body, pairedDevices);
+    Log.d(TAG, "Paired devices count: " + bluetoothDevices.size());
+    final Iterator<BluetoothDevice> bondedDevicesIterator = bluetoothDevices.iterator();
+    while (bondedDevicesIterator.hasNext()) {
+
+      BluetoothDevice bondedDevice = bondedDevicesIterator.next();
+      deviceList += bondedDevice.getName()
+          + " [" + getBluetoothMajorDeviceClass(bondedDevice.getBluetoothClass().getMajorDeviceClass()) + "]"
+          + (bondedDevicesIterator.hasNext() ? "\n" : "");
+    }
+
+    return context.getString(
+        showConnectedDevicesOnly ? R.string.extension_expanded_body_connected_devices :
+            R.string.extension_expanded_body_paired_devices, deviceList);
   }
+
+  private Set<BluetoothDevice> getBluetoothDevices() {
+
+    if (showConnectedDevicesOnly) {
+
+      return connectedDevices;
+    }
+
+    return bluetoothAdaptor.getBondedDevices();
+  }
+
 
   private String getBluetoothStatus() {
 
@@ -141,4 +165,6 @@ public class BluetoothMessageBuilder {
         return "unknown!";
     }
   }
+
+
 }

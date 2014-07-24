@@ -1,29 +1,106 @@
 package com.pixelus.dashclock.ext.mybluetooth;
 
-import android.app.Activity;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceGroup;
+import android.view.MenuItem;
+import com.crashlytics.android.Crashlytics;
 
-public class BluetoothExtensionActivity extends Activity {
+public class BluetoothExtensionActivity extends PreferenceActivity
+    implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-  /**
-   * Called when the activity is first created.
-   *
-   * @param savedInstanceState If the activity is being re-initialized after
-   *                           previously being shut down then this Bundle contains the data it most
-   *                           recently supplied in onSaveInstanceState(Bundle). <b>Note: Otherwise it is null.</b>
-   */
-  @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+      getActionBar().setIcon(R.drawable.ic_launcher);
+      getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    Crashlytics.start(this);
   }
 
   @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.main, menu);
-    return true;
+  protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    setupSimplePreferencesScreen();
+    initSummary(getPreferenceScreen());
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+      // TODO: if the previous activity on the stack isn't a ConfigurationActivity, launch it.
+      finish();
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    // Set up a listener whenever a key changes
+    getPreferenceScreen().getSharedPreferences()
+        .registerOnSharedPreferenceChangeListener(this);
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    // Unregister the listener whenever a key changes
+    getPreferenceScreen().getSharedPreferences()
+        .unregisterOnSharedPreferenceChangeListener(this);
+  }
+
+
+  private void setupSimplePreferencesScreen() {
+    // In the simplified UI, fragments are not used at all and we instead
+    // use the older PreferenceActivity APIs.
+
+    // Add 'general' preferences.
+    addPreferencesFromResource(R.xml.preferences);
+  }
+
+  public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                        String key) {
+    updatePrefSummary(findPreference(key));
+  }
+
+  private void initSummary(Preference p) {
+    if (p instanceof PreferenceGroup) {
+      PreferenceGroup pGrp = (PreferenceGroup) p;
+      for (int i = 0; i < pGrp.getPreferenceCount(); i++) {
+        initSummary(pGrp.getPreference(i));
+      }
+    } else {
+      updatePrefSummary(p);
+    }
+  }
+
+  private void updatePrefSummary(Preference p) {
+    if (p instanceof ListPreference) {
+      ListPreference listPref = (ListPreference) p;
+      p.setSummary(listPref.getEntry());
+    }
+    if (p instanceof EditTextPreference) {
+      EditTextPreference editTextPref = (EditTextPreference) p;
+      if (p.getTitle().toString().contains("assword")) {
+        p.setSummary("******");
+      } else {
+        p.setSummary(editTextPref.getText());
+      }
+    }
+    if (p instanceof MultiSelectListPreference) {
+      EditTextPreference editTextPref = (EditTextPreference) p;
+      p.setSummary(editTextPref.getText());
+    }
   }
 
 }

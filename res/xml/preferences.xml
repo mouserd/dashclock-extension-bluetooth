@@ -1,0 +1,20 @@
+<PreferenceScreen
+    android:title="@string/extension_settings_title"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+  <PreferenceCategory android:title="@string/pref_category_display">
+    <CheckBoxPreference
+        android:key="show_connected_devices_only"
+        android:title="@string/pref_connected_devices_only"
+        android:defaultValue="false"/>
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/pref_category_labs">
+    <CheckBoxPreference
+        android:key="prompt_to_connect_to_paired_device"
+        android:title="@string/pref_prompt_to_connect_to_paired_device"
+        android:defaultValue="false"/>
+  </PreferenceCategory>
+
+</PreferenceScreen>
