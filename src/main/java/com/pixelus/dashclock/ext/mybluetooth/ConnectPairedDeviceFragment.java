@@ -28,7 +28,7 @@ public class ConnectPairedDeviceFragment extends DialogFragment {
   private String selectedDeviceName;
 
   @Override
-  public Dialog onCreateDialog(Bundle savedInstanceState) {
+  public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
     final Activity activity = getActivity();
     final Intent intent = getActivity().getIntent();
@@ -70,20 +70,19 @@ public class ConnectPairedDeviceFragment extends DialogFragment {
   private void connectToSelectedPairedDevice() {
 
     final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    if (bluetoothAdapter != null) {
-      for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
-        if (device.getName().equals(selectedDeviceName)) {
+    for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
 
-          try {
-            final BluetoothDevice actual = bluetoothAdapter.getRemoteDevice(device.getAddress());
-            final BluetoothSocket socket = actual.createRfcommSocketToServiceRecord(UUID.randomUUID());
+      if (device.getName().equals(selectedDeviceName)) {
 
-            socket.connect();
-            return;
-          } catch (IOException e) {
-            Crashlytics.logException(e);
-          }
+        try {
+          final BluetoothDevice remoteDevice = bluetoothAdapter.getRemoteDevice(device.getAddress());
+          final BluetoothSocket remoteDeviceSocket = remoteDevice.createRfcommSocketToServiceRecord(UUID.randomUUID());
+          remoteDeviceSocket.connect();
+
+        } catch (IOException e) {
+          Crashlytics.logException(e);
         }
+        return;
       }
     }
   }
@@ -92,8 +91,9 @@ public class ConnectPairedDeviceFragment extends DialogFragment {
   private DialogInterface.OnClickListener connectDialogClickListener = new DialogInterface.OnClickListener() {
 
     @Override
-    public void onClick(DialogInterface dialogInterface, int i) {
-      ListView listView = ((AlertDialog) dialogInterface).getListView();
+    public void onClick(final DialogInterface dialogInterface, final int i) {
+
+      final ListView listView = ((AlertDialog) dialogInterface).getListView();
       selectedDeviceName = (String) listView.getAdapter().getItem(listView.getCheckedItemPosition());
 
       Log.d(TAG, "Selected device: " + selectedDeviceName);

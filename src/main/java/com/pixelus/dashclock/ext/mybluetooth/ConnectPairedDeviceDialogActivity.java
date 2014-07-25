@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentActivity;
 public class ConnectPairedDeviceDialogActivity extends FragmentActivity {
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    DialogFragment dialog = new ConnectPairedDeviceFragment();
+    final DialogFragment dialog = new ConnectPairedDeviceFragment();
     dialog.show(getSupportFragmentManager(), "Connect Paired Device");
   }
 }

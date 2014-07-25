@@ -12,7 +12,7 @@
                android:debuggable="${debuggable}">
 
     <activity android:exported="true" android:label="@string/extension_label"
-              android:name=".BluetoothExtensionActivity"/>
+              android:name=".BluetoothExtensionSettingsActivity"/>
 
     <activity android:exported="true"
               android:name=".ToggleBluetoothDialogActivity"
@@ -34,10 +34,9 @@
       <meta-data android:name="worldReadable" android:value="true"/>
       <meta-data android:name="description" android:value="@string/extension_description"/>
 
-      <!-- A settings activity is optional - this extension doesn't have any settings -->
       <meta-data
           android:name="settingsActivity"
-          android:value=".BluetoothExtensionActivity"/>
+          android:value=".BluetoothExtensionSettingsActivity"/>
     </service>
 
     <meta-data android:name="com.crashlytics.ApiKey" android:value="e40d13de9e45727c7dc411977f11d4913a520bf1"/>

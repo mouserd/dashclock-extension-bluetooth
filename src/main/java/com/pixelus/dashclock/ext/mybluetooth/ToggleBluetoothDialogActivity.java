@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentActivity;
 public class ToggleBluetoothDialogActivity extends FragmentActivity {
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    DialogFragment dialog = new ToggleBluetoothFragment();
+    final DialogFragment dialog = new ToggleBluetoothFragment();
     dialog.show(getSupportFragmentManager(), "Toggle Bluetooth");
   }
 }

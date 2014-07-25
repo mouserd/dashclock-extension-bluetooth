@@ -12,11 +12,12 @@ import android.preference.PreferenceGroup;
 import android.view.MenuItem;
 import com.crashlytics.android.Crashlytics;
 
-public class BluetoothExtensionActivity extends PreferenceActivity
+public class BluetoothExtensionSettingsActivity extends PreferenceActivity
     implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-  public void onCreate(Bundle savedInstanceState) {
+  public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
       getActionBar().setIcon(R.drawable.ic_launcher);
       getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -26,17 +27,20 @@ public class BluetoothExtensionActivity extends PreferenceActivity
   }
 
   @Override
-  protected void onPostCreate(Bundle savedInstanceState) {
+  protected void onPostCreate(final Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
+
     setupSimplePreferencesScreen();
     initSummary(getPreferenceScreen());
   }
 
   @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
+  public boolean onOptionsItemSelected(final MenuItem item) {
+
     if (item.getItemId() == android.R.id.home) {
       // TODO: if the previous activity on the stack isn't a ConfigurationActivity, launch it.
       finish();
+
       return true;
     }
 
@@ -46,17 +50,17 @@ public class BluetoothExtensionActivity extends PreferenceActivity
   @Override
   protected void onResume() {
     super.onResume();
+
     // Set up a listener whenever a key changes
-    getPreferenceScreen().getSharedPreferences()
-        .registerOnSharedPreferenceChangeListener(this);
+    getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
   }
 
   @Override
   protected void onPause() {
     super.onPause();
+
     // Unregister the listener whenever a key changes
-    getPreferenceScreen().getSharedPreferences()
-        .unregisterOnSharedPreferenceChangeListener(this);
+    getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
   }
 
 
@@ -68,29 +72,34 @@ public class BluetoothExtensionActivity extends PreferenceActivity
     addPreferencesFromResource(R.xml.preferences);
   }
 
-  public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                        String key) {
+  public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
     updatePrefSummary(findPreference(key));
   }
 
-  private void initSummary(Preference p) {
+  private void initSummary(final Preference p) {
+
     if (p instanceof PreferenceGroup) {
-      PreferenceGroup pGrp = (PreferenceGroup) p;
+
+      final PreferenceGroup pGrp = (PreferenceGroup) p;
       for (int i = 0; i < pGrp.getPreferenceCount(); i++) {
+
         initSummary(pGrp.getPreference(i));
       }
     } else {
+
       updatePrefSummary(p);
     }
   }
 
-  private void updatePrefSummary(Preference p) {
+  private void updatePrefSummary(final Preference p) {
+
     if (p instanceof ListPreference) {
-      ListPreference listPref = (ListPreference) p;
+      final ListPreference listPref = (ListPreference) p;
       p.setSummary(listPref.getEntry());
     }
     if (p instanceof EditTextPreference) {
-      EditTextPreference editTextPref = (EditTextPreference) p;
+
+      final EditTextPreference editTextPref = (EditTextPreference) p;
       if (p.getTitle().toString().contains("assword")) {
         p.setSummary("******");
       } else {
@@ -98,7 +107,8 @@ public class BluetoothExtensionActivity extends PreferenceActivity
       }
     }
     if (p instanceof MultiSelectListPreference) {
-      EditTextPreference editTextPref = (EditTextPreference) p;
+
+      final EditTextPreference editTextPref = (EditTextPreference) p;
       p.setSummary(editTextPref.getText());
     }
   }

@@ -13,6 +13,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static android.content.DialogInterface.BUTTON_POSITIVE;
@@ -25,7 +27,7 @@ public class ToggleBluetoothFragment extends DialogFragment {
   private boolean bluetoothEnabled;
 
   @Override
-  public Dialog onCreateDialog(Bundle savedInstanceState) {
+  public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
     final Activity activity = getActivity();
 
@@ -45,11 +47,6 @@ public class ToggleBluetoothFragment extends DialogFragment {
         .create();
   }
 
-  @Override
-  public void onDismiss(DialogInterface dialog) {
-    super.onDismiss(dialog);
-  }
-
   private class DialogClickListener implements DialogInterface.OnClickListener {
 
     private Activity activity;
@@ -67,32 +64,31 @@ public class ToggleBluetoothFragment extends DialogFragment {
       if (BUTTON_POSITIVE == id) {
 
         final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter != null) {
-          if (bluetoothEnabled) {
+        if (bluetoothAdapter == null) {
+          return;
+        }
+        if (bluetoothEnabled) {
 
-            Log.d(TAG, "Disabling Bluetooth...");
-            bluetoothAdapter.disable();
-          } else {
+          Log.d(TAG, "Disabling Bluetooth...");
+          bluetoothAdapter.disable();
+        } else {
 
-            Log.d(TAG, "Enabling Bluetooth...");
-            bluetoothAdapter.enable();
+          Log.d(TAG, "Enabling Bluetooth...");
+          bluetoothAdapter.enable();
 
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-            boolean promptToConnectToDeviceOnEnable =
-                sp.getBoolean(BluetoothExtension.PREF_PROMPT_TO_CONNECT_TO_DEVICE_ON_ENABLE, false);
+          // Based on a user preference... show the dialog to connect to a paired device
+          final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+          final boolean promptToConnectToDeviceOnEnable =
+              sp.getBoolean(BluetoothExtension.PREF_PROMPT_TO_CONNECT_TO_DEVICE_ON_ENABLE, false);
 
-            if (promptToConnectToDeviceOnEnable) {
-
-              displayConnectToPairedDeviceDialog(bluetoothAdapter);
-            }
+          if (promptToConnectToDeviceOnEnable) {
+            displayConnectToPairedDeviceDialog(bluetoothAdapter);
           }
         }
-
       }
-
     }
 
-    private void displayConnectToPairedDeviceDialog(BluetoothAdapter bluetoothAdapter) {
+    private void displayConnectToPairedDeviceDialog(final BluetoothAdapter bluetoothAdapter) {
 
       // Ensure that the enabling of bluetooth has been completed.
       while (!bluetoothAdapter.isEnabled()) {
@@ -101,17 +97,13 @@ public class ToggleBluetoothFragment extends DialogFragment {
       final Set<BluetoothDevice> pairedDevicesSet = bluetoothAdapter.getBondedDevices();
       if (pairedDevicesSet.size() > 0) {
 
-        // TODO Clean this up!
-        CharSequence[] pairedDevicesArray = new CharSequence[pairedDevicesSet.size()];
-
-        int i = 0;
-        for (BluetoothDevice device : pairedDevicesSet) {
-          pairedDevicesArray[i] = device.getName();
-          i++;
+        final List<CharSequence> pairedDeviceNames = new ArrayList<CharSequence>();
+        for (BluetoothDevice pairedDevice : pairedDevicesSet) {
+          pairedDeviceNames.add(pairedDevice.getName());
         }
 
-        Intent connectIntent = new Intent(activity, ConnectPairedDeviceDialogActivity.class);
-        connectIntent.putExtra(EXTRA_PAIRED_DEVICES, pairedDevicesArray);
+        final Intent connectIntent = new Intent(activity, ConnectPairedDeviceDialogActivity.class);
+        connectIntent.putExtra(EXTRA_PAIRED_DEVICES, pairedDeviceNames.toArray(new CharSequence[pairedDeviceNames.size()]));
         startActivityForResult(connectIntent, 1);
       }
     }

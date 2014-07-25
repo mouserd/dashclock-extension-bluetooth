@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
+import com.pixelus.dashclock.ext.mybluetooth.broadcast.BluetoothStateChangedBroadcastReceiver;
 import com.pixelus.dashclock.ext.mybluetooth.builder.BluetoothMessageBuilder;
 
 import static android.bluetooth.BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED;
@@ -63,7 +64,7 @@ public class BluetoothExtension extends DashClockExtension {
   }
 
   @Override
-  protected void onUpdateData(int i) {
+  public void onUpdateData(final int i) {
 
     if (!crashlyticsStarted) {
       Crashlytics.start(this);

@@ -120,9 +120,7 @@ public class BluetoothMessageBuilder {
       return context.getString(R.string.bluetooth_status_unknown);
     }
 
-    int state = bluetoothAdaptor.getState();
-    switch (state) {
-
+    switch (bluetoothAdaptor.getState()) {
       case STATE_OFF:
         return context.getString(R.string.bluetooth_status_disabled);
       case STATE_TURNING_ON:
@@ -136,7 +134,7 @@ public class BluetoothMessageBuilder {
     }
   }
 
-  private String getBluetoothMajorDeviceClass(int majorDeviceClass) {
+  private String getBluetoothMajorDeviceClass(final int majorDeviceClass) {
 
     switch (majorDeviceClass) {
       case AUDIO_VIDEO:

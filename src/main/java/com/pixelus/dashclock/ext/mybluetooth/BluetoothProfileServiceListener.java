@@ -21,7 +21,7 @@ public class BluetoothProfileServiceListener implements BluetoothProfile.Service
   private Map<Integer, BluetoothProfile> discoveredProfiles = new HashMap<Integer, BluetoothProfile>();
   private Context context;
 
-  public BluetoothProfileServiceListener(Context context) {
+  public BluetoothProfileServiceListener(final Context context) {
     this.context = context;
   }
 
@@ -29,9 +29,6 @@ public class BluetoothProfileServiceListener implements BluetoothProfile.Service
     return connectedDevices;
   }
 
-  public Set<Integer> getDiscoveredProfiles() {
-    return discoveredProfiles.keySet();
-  }
 
   public void closeAllProxies(BluetoothAdapter bluetoothAdapter) {
     for (int profile : discoveredProfiles.keySet()) {
@@ -51,15 +48,15 @@ public class BluetoothProfileServiceListener implements BluetoothProfile.Service
     Log.d(TAG, "Bluetooth profile: " + profile);
     Log.d(TAG, "Checking connected services... (count: " + proxy.getConnectedDevices().size() + ")");
     for (BluetoothDevice device : proxy.getConnectedDevices()) {
-      Log.d("onServiceConnected", "|" + device.getName() + " | " + device.getAddress() + " | " + proxy.getConnectionState
-          (device) + "(connected = " + BluetoothAdapter.STATE_CONNECTED + ")");
+
+      Log.d("onServiceConnected", "|" + device.getName() + " | " + device.getAddress() + " | "
+          + proxy.getConnectionState(device) + "(connected = " + BluetoothAdapter.STATE_CONNECTED + ")");
 
       connectedDevices.add(device);
     }
 
     Log.d(TAG, "Sending broadcast service connected broadcast (profile: " + profile + ")");
     context.sendBroadcast(new Intent(ACTION_BLUETOOTH_CONNECTED_SERVICES));
-
 //        bluetoothAdaptor.closeProfileProxy(profile, proxy);
   }
-};
+}
