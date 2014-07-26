@@ -92,6 +92,11 @@ public class ToggleBluetoothFragment extends DialogFragment {
 
       // Ensure that the enabling of bluetooth has been completed.
       while (!bluetoothAdapter.isEnabled()) {
+        try {
+          Thread.sleep(10);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
 
       final Set<BluetoothDevice> pairedDevicesSet = bluetoothAdapter.getBondedDevices();
