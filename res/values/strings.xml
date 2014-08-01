@@ -12,7 +12,8 @@
 
   <string name="extension_expanded_body_paired_devices" formatted="false">Paired devices:\n%s</string>
   <string name="extension_expanded_body_connected_devices" formatted="false">Connected devices:\n%s</string>
-  <string name="extension_expanded_title" formatted="false">%s (%s)</string>
+  <string name="extension_expanded_title" formatted="false">%s</string>
+  <string name="extension_expanded_title_device_name" formatted="false">(%s)</string>
 
   <string name="bluetooth_status_enabled">Enabled</string>
   <string name="bluetooth_status_enabling">Enabling...</string>
@@ -30,4 +31,5 @@
   <string name="pref_category_display">Display</string>
   <string name="pref_category_labs">Labs</string>
   <string name="pref_prompt_to_connect_to_paired_device_title">Connect device on enable?</string>
+  <string name="pref_show_device_name_title">Show device name?</string>
 </resources>

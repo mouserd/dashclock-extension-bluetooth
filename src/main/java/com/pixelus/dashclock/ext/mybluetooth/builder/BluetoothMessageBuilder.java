@@ -35,6 +35,7 @@ public class BluetoothMessageBuilder {
   private BluetoothExtension context;
   private boolean showConnectedDevicesOnly;
   private Set<BluetoothDevice> connectedDevices;
+  private boolean showDeviceName;
 
   public BluetoothMessageBuilder withContext(final BluetoothExtension context) {
     this.context = context;
@@ -43,6 +44,11 @@ public class BluetoothMessageBuilder {
 
   public BluetoothMessageBuilder withBluetoothAdaptor(final BluetoothAdapter bluetoothAdaptor) {
     this.bluetoothAdaptor = bluetoothAdaptor;
+    return this;
+  }
+
+  public BluetoothMessageBuilder withDeviceNameShown(boolean showDeviceName) {
+    this.showDeviceName = showDeviceName;
     return this;
   }
 
@@ -62,12 +68,21 @@ public class BluetoothMessageBuilder {
 
   public String buildExpandedTitleMessage() {
 
-    if (bluetoothAdaptor == null) {
-      return context.getString(R.string.extension_expanded_title, R.string.bluetooth_status_unknown,
-          getBluetoothStatus());
+    return context.getString(R.string.extension_expanded_title, getBluetoothStatus() + " " + getDeviceName());
+  }
+
+  private String getDeviceName() {
+
+    if (showDeviceName) {
+
+      if (bluetoothAdaptor == null) {
+        return context.getString(R.string.extension_expanded_title_device_name, R.string.bluetooth_status_unknown);
+      }
+
+      return context.getString(R.string.extension_expanded_title_device_name, bluetoothAdaptor.getName());
     }
 
-    return context.getString(R.string.extension_expanded_title, getBluetoothStatus(), bluetoothAdaptor.getName());
+    return "";
   }
 
   public String buildExpandedBodyMessage() {
@@ -163,6 +178,4 @@ public class BluetoothMessageBuilder {
         return "unknown!";
     }
   }
-
-
 }

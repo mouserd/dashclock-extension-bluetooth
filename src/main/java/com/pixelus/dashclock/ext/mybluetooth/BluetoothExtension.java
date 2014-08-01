@@ -30,6 +30,7 @@ public class BluetoothExtension extends DashClockExtension {
   public static final String ACTION_BLUETOOTH_CONNECTED_SERVICES =
       "com.pixelus.dashclock.ext.mybluetooth.BLUETOOTH_CONNECTED_SERVICES";
 
+  public static final String PREF_SHOW_DEVICE_NAME = "show_device_name";
   public static final String PREF_SHOW_CONNECTED_DEVICES_ONLY = "show_connected_devices_only";
   public static final String PREF_PROMPT_TO_CONNECT_TO_DEVICE_ON_ENABLE = "prompt_to_connect_to_paired_device";
 
@@ -37,12 +38,11 @@ public class BluetoothExtension extends DashClockExtension {
   private BluetoothStateChangedBroadcastReceiver bluetoothStateChangedBroadcastReceiver;
   private Set<BluetoothDevice> connectedDevices = new HashSet<BluetoothDevice>();
 
-  private boolean crashlyticsStarted = false;
-
   @Override
   public void onCreate() {
 
     super.onCreate();
+    Crashlytics.start(this);
 
     // On create, register to receive any changes to the bluetooth settings.  This ensures that we can
     // update our extension status based on us toggling the state or something externally.
@@ -66,18 +66,15 @@ public class BluetoothExtension extends DashClockExtension {
   @Override
   public void onUpdateData(final int i) {
 
-    if (!crashlyticsStarted) {
-      Crashlytics.start(this);
-      crashlyticsStarted = true;
-    }
-
     final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+    final boolean showDeviceName = sp.getBoolean(PREF_SHOW_DEVICE_NAME, true);
     final boolean showConnectedDevicesOnly = sp.getBoolean(PREF_SHOW_CONNECTED_DEVICES_ONLY, false);
 
     final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     final BluetoothMessageBuilder builder = new BluetoothMessageBuilder()
         .withContext(this)
         .withBluetoothAdaptor(bluetoothAdapter)
+        .withDeviceNameShown(showDeviceName)
         .withOnlyConnectedDevicesShown(showConnectedDevicesOnly)
         .withConnectedDevices(connectedDevices);
 

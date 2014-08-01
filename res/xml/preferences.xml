@@ -4,6 +4,12 @@
 
 
   <PreferenceCategory android:title="@string/pref_category_display">
+
+    <CheckBoxPreference
+        android:key="show_device_name"
+        android:title="@string/pref_show_device_name_title"
+        android:defaultValue="true"/>
+
     <CheckBoxPreference
         android:key="show_connected_devices_only"
         android:title="@string/pref_connected_devices_only_title"
